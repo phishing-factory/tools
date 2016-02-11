@@ -14,7 +14,7 @@ class VirusTotal:
         self.state = {
             "url"  : "https://www.virustotal.com/vtapi/v2/ip-address/report",
             "ip"   : None,
-            "key"  : "af41fe46d4e9a0b3a3def6d8ae2a34206bd42ac86997d59a1fe01945cc586d84",
+            "key"  : "__INSERT_API_KEY_HERE__",
             "resp" : None
         }
         
