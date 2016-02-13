@@ -1,9 +1,9 @@
 #!/usr/bin/env python2
 #author: mp
 #comment: verify a list of emails using the RCPT TO method
-#         you will probably have to change a lot of this
-#         converation before running as some mail servers
-#         dont follow the spec.
+#you will probably have to change a lot of this
+#converation before running as some mail servers
+#dont follow the spec.
 
 import socket
 import sys
