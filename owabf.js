@@ -4,6 +4,8 @@
 // microsuck forefront to provide cookie auth.. something that is annoying to code for with
 // any other language, so impersonate a browser and use that to make guessing attempts :)
 
+// this is currently broken
+
 var casper = require("casper").create({
     verbose      : true,
     pageSettings : {
