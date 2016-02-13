@@ -2,12 +2,12 @@
 #author: mp
 #comment: multiprocessed sub domain scanner
 
-from socket import gethostbyname, gaierror
-from multiprocessing import Process
+from socket import gethostbyname
+from multiprocessing import Process, Queue
 from time import sleep
-import Queue
-import sys
 import argparse
+import sys
+import signal
 
 class Result:
     """ object store for resolved domains """
@@ -31,7 +31,7 @@ class Scanner:
             "workers" : workers
         }
 
-        for worker in range( 0, self.state["workers"] + 1 ):
+        for worker in range( 0, int( self.state["workers"] ) + 1 ):
             """ start worker processes """
             proc = Process( target=self.resolver )
             self.state["procs"].append( proc )
@@ -44,28 +44,20 @@ class Scanner:
 
         self.subcount = 0 #number of jobs is number of subs
         for subdomain in open( sublist, "r" ).readlines():
-            self.state["subs"].put( subdomain )
+            self.state["subs"].put( subdomain.rstrip( "\n" ) )
             self.subcount += 1
-
-        while True:
-            if (( len( self.state["results"] ) + 1 ) == self.subcount ):
-                break #workers are probably done
-
-        for proc in self.state["procs"]:
-            proc.join() #clean up
-            print "[*] Joined on process"
 
     def resolver( self ):
         """ resolve subdomains in queue """
         while True: #keep checking for work
-            sub = self.state["subs"].get_nowait()
-            if sub is not None:
+            if self.state["subs"].empty() is not True:
+                sub = self.state["subs"].get()
                 try: #catch if host is not known
                     record = "{}.{}".format( sub, self.state["domain"] )
                     host = gethostbyname( record )
-                except giaerror as UNKNOWN:
+                except Exception as E:
                     host = None
-                self.results.put( Result( record, host ) )
+                self.state["results"].put( Result( record, host ) )
             else: #wait for queue to be populated
                 sleep( 0.2 )
                 continue
@@ -73,10 +65,10 @@ class Scanner:
     def printer( self ):
         """ print after resolved """
         while True: #keep checking for results
-            result = self.state["results"].get_nowait()
-            if result is not None:
+            if self.state["results"].empty() is not True:
+                result = self.state["results"].get()
                 if result.host is not None: #found one :)
-                    print "[>] {} : {}",format( result.record, result.host )
+                    print "[>] {} : {}".format( result.record, result.host )
             else: #wait for queue to be populated
                 sleep( 0.2 )
                 continue
@@ -86,6 +78,9 @@ if __name__ == "__main__":
     workers = None
     domain  = None
     sublist = None
+
+    def signal_handler( signal, frame ):
+        sys.exit( 0 )
 
     parser = argparse.ArgumentParser( "Multiprocessed Sub Domain Scanner" )
     parser.add_argument( "--domain",  required=True,  help="domain to scan" )
@@ -104,4 +99,5 @@ if __name__ == "__main__":
         workers = 1
 
     print "[+] Starting..."
+    signal.signal( signal.SIGINT, signal_handler )
     scanner = Scanner( domain, sublist, workers )
