@@ -5,3 +5,4 @@
     vt.py         - check an IPv4 address using Virus Total API
     dnshistory.py - retrieve a list of IPv4 addresses a domain has pointed at
     subscan.py    - bruteforce DNS records with a list of sub domains
+    dirbuster.py  - bruteforce directories for a given url
