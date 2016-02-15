@@ -10,3 +10,4 @@
     keylog.sh     - simple keylogger using strace
     mangler.sh    - wordlist generator
     proxydns.sh   - probably should be in .bashrc prevent dns leakage
+    vrfy.py       - verify an email by checking SMTP using VRFY command
