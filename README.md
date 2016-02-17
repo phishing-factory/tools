@@ -12,3 +12,4 @@
     proxydns.sh   - probably should be in .bashrc prevent dns leakage
     vrfy.py       - verify an email by checking SMTP using VRFY command
     catpdf.py     - convert a pdf to grepable text
+    ntlm.sh       - password guessing script for NTLM over basic auth
