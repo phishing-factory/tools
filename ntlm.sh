@@ -52,7 +52,7 @@ cat $passlist | while read pass ; do
         fi
     done
     let count=count+1
-    if [[ $[ %count % $attempts ] -eq 0 ]]; then
+    if [[ $[ $count % $attempts ] -eq 0 ]]; then
         echo "[>] Waiting $sleeptime minutes before next cycle"
         sleep $delay
     fi
