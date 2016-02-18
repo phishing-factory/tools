@@ -13,3 +13,4 @@
     vrfy.py       - verify an email by checking SMTP using VRFY command
     catpdf.py     - convert a pdf to grepable text
     ntlm.sh       - password guessing script for NTLM over basic auth
+    botcheck.py   - check abuse.ch for an IPv4 address
