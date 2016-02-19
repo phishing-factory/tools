@@ -3,7 +3,6 @@
 #comment: poor mans sniffer
 
 proto=""
-int=""
 
 usage() {
     echo "usage: $0 -p <proto>"
