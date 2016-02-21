@@ -17,3 +17,4 @@
     sniff.sh         - poor mans packet sniffer
     getrouterpass.py - prints out default passwords for routers
     ddg.py           - duck duck go scraper
+    torolly.sh       - roll a new exit node every n seconds
