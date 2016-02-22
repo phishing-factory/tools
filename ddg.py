@@ -2,15 +2,29 @@
 #author: mp
 #comment: scrape results from duck duck go
 
-#currently im only wanting the official site results as im hunting router firmware
-#so this script prints only 1 result, i will expand on it later
-
 import urllib2
 from BeautifulSoup import BeautifulSoup as Soup
-import sys
+import argparse
 
-opener = urllib2.build_opener()
-opener.addheaders = [( "User-agent", "Mozilla/5.0" )]
-soup = Soup( opener.open( "https://duckduckgo.com/?q={}".format( sys.argv[1] ) ).read() )
-for span in soup.findAll( "span", { "class" : "result__url__domain" } ):
-    print span.text
+def get_links( url ):
+    opener = urllib2.build_opener()
+    opener.addheaders = [( "User-agent", "Mozilla/5.0" )]
+    soup = Soup( opener.open( url ).read() )
+    for link in soup.findAll( "div", { "class" : "url" } ):
+        print " {}".format( link.text.encode( "utf-8" ).strip() )
+
+if __name__ == "__main__":
+    
+    query = None
+    
+    parser = argparse.ArgumentParser( "scrape results from Duck Duck Go" )
+    parser.add_argument( "-q", "--query", required=True, help="Search string" )
+
+    args = vars( parser.parse_args() )
+
+    if args["query"]:
+        query = args["query"]
+
+    url = "https://duckduckgo.com/html/?q={}".format( query )
+    print url
+    get_links( url )
