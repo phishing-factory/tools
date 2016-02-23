@@ -18,3 +18,4 @@
     getrouterpass.py - prints out default passwords for routers
     ddg.py           - duck duck go scraper
     torolly.sh       - roll a new exit node every n seconds
+    sockschecker.py  - verify a list of proxies to see which ones are working
