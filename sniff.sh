@@ -3,9 +3,10 @@
 #comment: poor mans sniffer
 
 proto=""
+host=""
 
 usage() {
-    echo "usage: $0 -p <proto>"
+    echo "usage: $0 -p <proto> -h <host IPv4>"
     echo "protocol options:"
     echo "  http"
     echo "  ftp - coming soon"
@@ -19,15 +20,18 @@ while [ -n "$1" ] ; do
     case "$1" in
         -p)
             shift; proto="$1";;
+        -h)
+            shift; host="$1";;
         *)
             echo "invalid switch"
             usage;;
     esac ; shift
 done
 
-[ -z "$proto" ] && usage
+[ -z "$proto" -o -z "$host" ] && usage
 if [[ $proto == *"http"* ]] ; then
-    stdbuf -oL -eL tcpdump -A -s 10240 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)" | egrep -a --line-buffered ".+(GET |HTTP\/|POST )|^[A-Za-z0-9-]+: " | perl -nle 'BEGIN{$|=1} { s/.*?(GET |HTTP\/[0-9.]* |POST )/\n$1/g; print }' | while read line ; do 
+    #from the man pages "To print all IPv4 HTTP packets to and from port 80, i.e. print only packets that contain data"
+    stdbuf -oL -eL tcpdump -A -s 10240 "tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0) and host $host" | egrep -a --line-buffered ".+(GET |HTTP\/|POST )|^[A-Za-z0-9-]+: " | perl -nle 'BEGIN{$|=1} { s/.*?(GET |HTTP\/[0-9.]* |POST )/\n$1/g; print }' | while read line ; do 
         #All Methods are black on blue 
         if [[ $line == *"OPTIONS"* ]] ; then 
             echo -e '\E[0;34m'"$line\033[0m" 
