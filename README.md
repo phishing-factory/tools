@@ -19,3 +19,4 @@
     ddg.py           - duck duck go scraper
     torolly.sh       - roll a new exit node every n seconds
     sockschecker.py  - verify a list of proxies to see which ones are working
+    blockfinder.py   - pull a list of ip blocks for a given country
