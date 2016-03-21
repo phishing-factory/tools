@@ -22,3 +22,4 @@ A bunch of scripts i use for pentesting and stuff. feel free to do whatever you 
     sockschecker.py  - verify a list of proxies to see which ones are working
     blockfinder.py   - pull a list of ip blocks for a given country
     GET.py           - print headers from GET request
+    proxyrequest.sh  - DNS request over socks proxy
