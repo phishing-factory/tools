@@ -23,3 +23,4 @@ A bunch of scripts i use for pentesting and stuff. feel free to do whatever you 
     blockfinder.py   - pull a list of ip blocks for a given country
     request.py       - print headers from an HTTP request
     proxyrequest.sh  - DNS request over socks proxy
+    spider.py        - simple link spider
