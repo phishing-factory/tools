@@ -25,3 +25,4 @@ A bunch of scripts i use for pentesting and stuff. feel free to do whatever you 
     proxyrequest.sh  - DNS request over socks proxy
     spider.py        - simple link spider
     smsf             - send SMS messages to your phone when a meterpreter session opens
+    phpma-enum.py    - enumerate phpmyadmin version
