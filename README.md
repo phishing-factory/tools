@@ -26,3 +26,4 @@ scripts i randomly write for pentesting and stuff. feel free to do whatever you 
     spider.py        - simple link spider
     smsf             - send SMS messages to your phone when a meterpreter session opens
     phpma-enum.py    - enumerate phpmyadmin version
+    psexec.sh        - psexec a bunch of shit on a network with metasploit
