@@ -3,6 +3,7 @@
 #psexec a bunch of shit on a network with metasploit
 #WARING: this shit is slow
 #also you should start a handler for this
+#setup: set your route, start auxiliary/server/socks4a and update proxychains conf to point at it
 
 targets=""
 user=""
