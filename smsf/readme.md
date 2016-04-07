@@ -1,1 +1,1 @@
-Start watcher and metasploit handler, when new connections show up in netstat, watcher sends a message to announcer.py which forwards a request to twilio to send an sms message to your phone. this is a hack at best, something i whipped up in about 10 min for POC 
+Start watcher and metasploit handler, when new connections show up in netstat, watcher sends a message to announcer.py which forwards a request to twilio to send an sms message to your phone. this is a hack at best, something i whipped up in about 10 min for POC to show off how easy twilio's API is 
