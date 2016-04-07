@@ -1,4 +1,4 @@
-A bunch of scripts i use for pentesting and stuff. feel free to do whatever you want this this code. the only thing i request is that you reference my work if you decide to use it in some other project
+scripts i randomly write for pentesting and stuff. feel free to do whatever you want this this code. the only thing i request is that you reference my work if you decide to use it in some other project
 # Tools
     rcptto.py        - verify a list of emails by checking SMTP response for RCPT TO
     owabf.js         - password guess against cookie auth based OWA
